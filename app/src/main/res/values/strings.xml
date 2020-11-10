@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Weather Demo</string>
+    <string name="demo_day">Monday</string>
+    <string name="demo_temperature">28 C</string>
 </resources>
