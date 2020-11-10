@@ -32,6 +32,7 @@
         android:textColor="@color/text_light"
         android:textSize="@dimen/font_size_city"
         android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/recycler_view_weather"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_temp_id" />
@@ -81,6 +82,9 @@
         android:layout_marginTop="@dimen/margin_regular"
         android:clipToPadding="false"
         android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_city_id"
         tools:listitem="@layout/item_forecast" />
 

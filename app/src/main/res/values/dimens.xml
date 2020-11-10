@@ -10,5 +10,5 @@
     <dimen name="margin_regular">16dp</dimen>
     <dimen name="card_size">80dp</dimen>
     <dimen name="progress_size">96dp</dimen>
-    <dimen name="divider_margin">1dp</dimen>
+    <dimen name="divider_margin">2dp</dimen>
 </resources>
