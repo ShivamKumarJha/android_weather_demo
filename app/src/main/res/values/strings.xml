@@ -3,4 +3,6 @@
     <string name="demo_city">Bangalore</string>
     <string name="demo_day">Monday</string>
     <string name="demo_temperature">28°</string>
+    <string name="api_error">Something went wrong at our end!</string>
+    <string name="retry">Retry</string>
 </resources>

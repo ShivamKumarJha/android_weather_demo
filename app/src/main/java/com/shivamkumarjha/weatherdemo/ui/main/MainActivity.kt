@@ -1,13 +1,16 @@
 package com.shivamkumarjha.weatherdemo.ui.main
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,6 +26,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var progressBar: ProgressBar
     private lateinit var temperatureTextView: TextView
     private lateinit var cityTextView: TextView
+    private lateinit var errorTextView: TextView
+    private lateinit var retryButton: Button
     private lateinit var recyclerView: RecyclerView
     private lateinit var weatherAdapter: WeatherAdapter
     private lateinit var mainViewModel: MainViewModel
@@ -41,8 +46,11 @@ class MainActivity : AppCompatActivity() {
         progressBar = findViewById(R.id.progress_bar_id)
         temperatureTextView = findViewById(R.id.tv_temp_id)
         cityTextView = findViewById(R.id.tv_city_id)
+        errorTextView = findViewById(R.id.tv_error_id)
+        retryButton = findViewById(R.id.button_retry)
+        retryButton.setBackgroundColor(ContextCompat.getColor(this, R.color.bg_button))
         // Recycler View
-        recyclerView = findViewById(R.id.shop_recycler_view)
+        recyclerView = findViewById(R.id.recycler_view_weather)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.setHasFixedSize(true)
         weatherAdapter = WeatherAdapter()
@@ -50,6 +58,13 @@ class MainActivity : AppCompatActivity() {
         // View Model
         mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         callApi()
+        // View listeners
+        retryButton.setOnClickListener {
+            constraintLayout.setBackgroundColor(Color.WHITE)
+            retryButton.visibility = View.GONE
+            errorTextView.visibility = View.GONE
+            callApi()
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -90,9 +105,14 @@ class MainActivity : AppCompatActivity() {
         if (isSuccess) {
             linearLayout.visibility = View.VISIBLE
             recyclerView.visibility = View.VISIBLE
+            errorTextView.visibility = View.GONE
+            retryButton.visibility = View.GONE
         } else {
             linearLayout.visibility = View.GONE
             recyclerView.visibility = View.GONE
+            errorTextView.visibility = View.VISIBLE
+            retryButton.visibility = View.VISIBLE
+            constraintLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.bg_failure))
         }
     }
 }

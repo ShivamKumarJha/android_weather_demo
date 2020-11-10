@@ -53,7 +53,14 @@ class Utility {
                 debugToast(context, "Failed! " + it.errorMessage)
             }
             it.responseCode != null -> {
-                debugToast(context, "Failed! " + it.responseCode)
+                if (it.responseCode == 401)
+                    getSnackBar(
+                        view,
+                        "Unauthorized access! Please update APP ID!",
+                        Snackbar.LENGTH_LONG
+                    ).setBackgroundTint(Color.RED).show()
+                else
+                    debugToast(context, "Failed! " + it.responseCode)
             }
         }
     }
