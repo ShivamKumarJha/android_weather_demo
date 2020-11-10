@@ -49,7 +49,7 @@ class MainViewModel : ViewModel() {
     fun getWeather(location: String, appId: String) {
         _isLoading.postValue(true)
         viewModelScope.launch {
-            WeatherRepository.getWeather(
+            WeatherRepository().getWeather(
                 location,
                 appId,
                 weatherApiListener
@@ -60,7 +60,7 @@ class MainViewModel : ViewModel() {
     fun getForecast(location: String, appId: String) {
         _isLoading.postValue(true)
         viewModelScope.launch {
-            WeatherRepository.getForecast(
+            WeatherRepository().getForecast(
                 location,
                 appId,
                 forecastApiListener

@@ -7,6 +7,10 @@ import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.shivamkumarjha.weatherdemo.BuildConfig
+import com.shivamkumarjha.weatherdemo.config.Constants
+import com.shivamkumarjha.weatherdemo.ui.BaseApplication
+import dagger.Module
+import dagger.Provides
 import okhttp3.Cache
 import okhttp3.ConnectionPool
 import okhttp3.OkHttpClient
@@ -14,53 +18,40 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
+import javax.inject.Singleton
 
 
-class RetrofitClient private constructor(
-        private var mContext: Context,
-        private var mBaseUrl: String
-) {
-    var retrofit: Retrofit
-
-    companion object {
-        private var INSTANCE: RetrofitClient? = null
-        fun get(): RetrofitClient {
-            return if (INSTANCE != null) {
-                INSTANCE!!
-            } else {
-                throw IllegalStateException("Retrofit client not initialized.")
-            }
-        }
-
-        fun initialize(context: Context, baseUrl: String) {
-            INSTANCE = RetrofitClient(context, baseUrl)
-        }
-    }
+@Module
+class RetrofitClient {
+    @Inject
+    lateinit var mContext: Context
 
     init {
-        retrofit = getRetrofit(gson, getOkHTTPClient(getHttpCache(mContext)))
+        BaseApplication.baseApplicationComponent.inject(this)
     }
 
-    private fun getHttpCache(appContext: Context): Cache {
+    @Singleton
+    @Provides
+    fun getHttpCache(): Cache {
         val cacheSize = 10 * 1024 * 1024
-        return Cache(appContext.cacheDir, cacheSize.toLong())
+        return Cache(mContext.cacheDir, cacheSize.toLong())
     }
 
-    //setLenient() : By default, Gson is strict and only accepts JSON as specified by.
-    //This option makes the parser liberal in what it accepts.
-    private val gson: Gson
-        get() {
-            //setLenient() : By default, Gson is strict and only accepts JSON as specified by.
-            //This option makes the parser liberal in what it accepts.
-            val gsonBuilder = GsonBuilder().setLenient()
-            gsonBuilder.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-            return gsonBuilder.create()
-        }
+    @Singleton
+    @Provides
+    fun getGson(): Gson {
+        return GsonBuilder().setLenient()
+            .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create()
+    }
 
-    private fun getOkHTTPClient(cache: Cache): OkHttpClient {
+    @Singleton
+    @Provides
+    fun getOkHTTPClient(cache: Cache): OkHttpClient {
         val client = OkHttpClient.Builder()
         val logging = HttpLoggingInterceptor()
-        val connectivityManager = mContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val connectivityManager =
+            mContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         // set your desired log level
         if (BuildConfig.DEBUG) {
             // development build
@@ -81,11 +72,19 @@ class RetrofitClient private constructor(
         return client.build()
     }
 
-    private fun getRetrofit(gson: Gson, okHttpClient: OkHttpClient): Retrofit {
+    @Singleton
+    @Provides
+    fun getRetrofit(): Retrofit {
         return Retrofit.Builder()
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .baseUrl(mBaseUrl)
-                .client(okHttpClient)
-                .build()
+            .addConverterFactory(GsonConverterFactory.create(getGson()))
+            .baseUrl(Constants.BASE_URL)
+            .client(getOkHTTPClient(getHttpCache()))
+            .build()
+    }
+
+    @Singleton
+    @Provides
+    fun getApiService(): ApiService {
+        return getRetrofit().create(ApiService::class.java)
     }
 }

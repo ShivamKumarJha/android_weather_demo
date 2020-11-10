@@ -2,32 +2,19 @@ package com.shivamkumarjha.weatherdemo.persistence
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.shivamkumarjha.weatherdemo.ui.BaseApplication
+import javax.inject.Inject
 
-class PreferenceManager(context: Context) {
+class PreferenceManager {
 
     private val pref: SharedPreferences
     private var privateMode = 0
 
-    companion object {
-        private var INSTANCE: PreferenceManager? = null
-
-        // Shared pref file name
-        private const val PREF_NAME = "Preferences"
-
-        fun initialize(context: Context) {
-            INSTANCE = PreferenceManager(context)
-        }
-
-        fun get(): PreferenceManager {
-            return if (INSTANCE != null) {
-                INSTANCE!!
-            } else {
-                throw IllegalStateException("Please initialize PreferenceManager before getting the instance!")
-            }
-        }
-    }
+    @Inject
+    lateinit var mContext: Context
 
     init {
-        pref = context.getSharedPreferences(PREF_NAME, privateMode)
+        BaseApplication.baseApplicationComponent.inject(this)
+        pref = mContext.getSharedPreferences("Preferences", privateMode)
     }
 }
