@@ -14,11 +14,8 @@ class PreferenceManager(context: Context) {
         // Shared pref file name
         private const val PREF_NAME = "Preferences"
 
-        fun initialize(context: Context): PreferenceManager? {
-            if (INSTANCE == null) {
-                INSTANCE = PreferenceManager(context)
-            }
-            return INSTANCE
+        fun initialize(context: Context) {
+            INSTANCE = PreferenceManager(context)
         }
 
         fun get(): PreferenceManager {
