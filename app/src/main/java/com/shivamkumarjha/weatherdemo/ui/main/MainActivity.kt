@@ -7,7 +7,6 @@ import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Button
-import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -24,7 +23,6 @@ import com.shivamkumarjha.weatherdemo.utility.Utility
 class MainActivity : AppCompatActivity() {
 
     private lateinit var constraintLayout: ConstraintLayout
-    private lateinit var linearLayout: LinearLayout
     private lateinit var progressBar: ProgressBar
     private lateinit var temperatureTextView: TextView
     private lateinit var cityTextView: TextView
@@ -45,7 +43,6 @@ class MainActivity : AppCompatActivity() {
     private fun initializer() {
         // Views
         constraintLayout = findViewById(R.id.constraint_layout_id)
-        linearLayout = findViewById(R.id.weather_text_views_id)
         progressBar = findViewById(R.id.progress_bar_id)
         temperatureTextView = findViewById(R.id.tv_temp_id)
         cityTextView = findViewById(R.id.tv_city_id)
@@ -107,13 +104,15 @@ class MainActivity : AppCompatActivity() {
 
     private fun statusToggle(isSuccess: Boolean) {
         if (isSuccess) {
-            linearLayout.visibility = View.VISIBLE
+            temperatureTextView.visibility = View.VISIBLE
+            cityTextView.visibility = View.VISIBLE
             recyclerView.visibility = View.VISIBLE
             recyclerView.startAnimation(slideUpAnimation)
             errorTextView.visibility = View.GONE
             retryButton.visibility = View.GONE
         } else {
-            linearLayout.visibility = View.GONE
+            temperatureTextView.visibility = View.GONE
+            cityTextView.visibility = View.GONE
             recyclerView.visibility = View.GONE
             errorTextView.visibility = View.VISIBLE
             retryButton.visibility = View.VISIBLE
