@@ -122,6 +122,7 @@ class Utility {
                 // We need list with only 4 entries
                 if (size >= 4)
                     return weatherModel
+                // Compare current item with next item
                 if (getDateOnly(item.dt_txt) == getDateOnly(weatherList[index + 1].dt_txt)) {
                     // Using sub Index to determine weather to add new entry or update previous entry
                     var subIndex = -1
@@ -157,6 +158,30 @@ class Utility {
                             item.dt_txt,
                             averageTemperature
                         )
+                    }
+                } else {
+                    // Decide to add current item
+                    var subIndex = -1
+                    if (weatherModel.isNotEmpty())
+                        for ((i, weather) in weatherModel.withIndex()) {
+                            if (getDateOnly(weather.day) == getDateOnly(item.dt_txt)) {
+                                subIndex = i
+                                break
+                            }
+                        }
+                    if (subIndex == -1) {
+                        weatherModel.add(
+                            WeatherModel(
+                                item.dt_txt,
+                                getAverageTemperature(
+                                    item.main.temp,
+                                    item.main.feels_like,
+                                    item.main.temp_min,
+                                    item.main.temp_max
+                                )
+                            )
+                        )
+                        size++
                     }
                 }
             }
