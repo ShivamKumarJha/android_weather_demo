@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.ProgressBar
@@ -29,6 +31,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var errorTextView: TextView
     private lateinit var retryButton: Button
     private lateinit var recyclerView: RecyclerView
+    private lateinit var slideUpAnimation: Animation
     private lateinit var weatherAdapter: WeatherAdapter
     private lateinit var mainViewModel: MainViewModel
 
@@ -49,6 +52,7 @@ class MainActivity : AppCompatActivity() {
         errorTextView = findViewById(R.id.tv_error_id)
         retryButton = findViewById(R.id.button_retry)
         retryButton.setBackgroundColor(ContextCompat.getColor(this, R.color.bg_button))
+        slideUpAnimation = AnimationUtils.loadAnimation(applicationContext, R.anim.slide_up)
         // Recycler View
         recyclerView = findViewById(R.id.recycler_view_weather)
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -105,6 +109,7 @@ class MainActivity : AppCompatActivity() {
         if (isSuccess) {
             linearLayout.visibility = View.VISIBLE
             recyclerView.visibility = View.VISIBLE
+            recyclerView.startAnimation(slideUpAnimation)
             errorTextView.visibility = View.GONE
             retryButton.visibility = View.GONE
         } else {
