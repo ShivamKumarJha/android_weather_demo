@@ -1,6 +1,8 @@
 package com.shivamkumarjha.weatherdemo.ui.main
 
 import android.os.Bundle
+import android.view.View
+import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.ViewModelProvider
@@ -11,6 +13,7 @@ import com.shivamkumarjha.weatherdemo.utility.Utility
 class MainActivity : AppCompatActivity() {
 
     private lateinit var constraintLayout: ConstraintLayout
+    private lateinit var progressBar: ProgressBar
     private lateinit var mainViewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,13 +25,17 @@ class MainActivity : AppCompatActivity() {
 
     private fun initializer() {
         constraintLayout = findViewById(R.id.constraint_layout_id)
+        progressBar = findViewById(R.id.progress_bar_id)
         mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         callApi()
     }
 
     private fun observeData() {
         mainViewModel.isLoading.observe(this, {
-
+            if (it)
+                progressBar.visibility = View.VISIBLE
+            else
+                progressBar.visibility = View.GONE
         })
         mainViewModel.weatherApiState.observe(this, {
             Utility.get().apiState(this, constraintLayout, it)
