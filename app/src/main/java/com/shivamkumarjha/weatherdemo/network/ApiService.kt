@@ -1,5 +1,6 @@
 package com.shivamkumarjha.weatherdemo.network
 
+import com.shivamkumarjha.weatherdemo.model.ForecastMain
 import com.shivamkumarjha.weatherdemo.model.WeatherMain
 import retrofit2.Call
 import retrofit2.Retrofit
@@ -30,5 +31,5 @@ interface ApiService {
     fun getForecast(
         @Query("q") q: String,
         @Query("APPID") APPID: String
-    ): Call<WeatherMain>
+    ): Call<ForecastMain>
 }
