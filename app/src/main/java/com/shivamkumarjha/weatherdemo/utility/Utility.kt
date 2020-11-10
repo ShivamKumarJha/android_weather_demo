@@ -85,4 +85,17 @@ class Utility {
             }
         }
     }
+
+    fun convertKelvinToCelsius(temperature: Double): Double {
+        return temperature - 273.15
+    }
+
+    fun getAverageTemperature(
+        temp: Double,
+        feels_like: Double,
+        temp_min: Double,
+        temp_max: Double
+    ): Double {
+        return (temp + feels_like + temp_min + temp_max) / 4
+    }
 }

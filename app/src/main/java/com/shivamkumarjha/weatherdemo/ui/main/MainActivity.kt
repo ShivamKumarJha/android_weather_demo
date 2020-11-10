@@ -1,5 +1,6 @@
 package com.shivamkumarjha.weatherdemo.ui.main
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import android.widget.LinearLayout
@@ -51,6 +52,7 @@ class MainActivity : AppCompatActivity() {
         callApi()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun observeData() {
         mainViewModel.isLoading.observe(this, {
             if (it)
@@ -60,17 +62,18 @@ class MainActivity : AppCompatActivity() {
         })
         mainViewModel.weatherApiState.observe(this, {
             Utility.get().apiState(this, constraintLayout, it)
-            toggleSuccessFailure(it.isSuccess)
+            statusToggle(it.isSuccess)
         })
         mainViewModel.weather.observe(this, {
             if (it != null) {
-                temperatureTextView.text = it.main.temp.toString()
+                temperatureTextView.text =
+                    Utility.get().convertKelvinToCelsius(it.main.temp).toInt().toString() + "°"
                 cityTextView.text = it.name
             }
         })
         mainViewModel.forecastApiState.observe(this, {
             Utility.get().apiState(this, constraintLayout, it)
-            toggleSuccessFailure(it.isSuccess)
+            statusToggle(it.isSuccess)
         })
         mainViewModel.forecast.observe(this, {
             if (it != null)
@@ -83,7 +86,7 @@ class MainActivity : AppCompatActivity() {
         mainViewModel.getForecast(Constants.QUERY_LOCATION, Constants.QUERY_APP_ID)
     }
 
-    private fun toggleSuccessFailure(isSuccess: Boolean) {
+    private fun statusToggle(isSuccess: Boolean) {
         if (isSuccess) {
             linearLayout.visibility = View.VISIBLE
             recyclerView.visibility = View.VISIBLE
