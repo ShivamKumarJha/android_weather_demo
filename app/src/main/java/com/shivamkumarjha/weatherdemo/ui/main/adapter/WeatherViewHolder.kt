@@ -15,7 +15,7 @@ class WeatherViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     @SuppressLint("SetTextI18n")
     fun initialize(weatherModel: WeatherModel) {
-        day.text = weatherModel.day
+        day.text = Utility.get().getDayFromDate(weatherModel.day)
         temperature.text =
             Utility.get().convertKelvinToCelsius(weatherModel.temperature).toInt().toString() + " C"
     }

@@ -12,6 +12,8 @@ import com.shivamkumarjha.weatherdemo.model.WeatherList
 import com.shivamkumarjha.weatherdemo.model.WeatherModel
 import com.shivamkumarjha.weatherdemo.network.ApiListener
 import com.shivamkumarjha.weatherdemo.network.ResponseState
+import java.text.SimpleDateFormat
+import java.util.*
 
 class Utility {
     private val tag = "Utility"
@@ -153,5 +155,11 @@ class Utility {
             }
         }
         return weatherModel
+    }
+
+    fun getDayFromDate(date: String): String {
+        val sdf = SimpleDateFormat("EEEE", Locale.ENGLISH)
+        val format = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
+        return sdf.format(format.parse(date)!!)
     }
 }
