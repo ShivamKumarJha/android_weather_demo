@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity() {
         })
         mainViewModel.forecast.observe(this, {
             if (it != null)
-                weatherAdapter.setWeathers(it.list)
+                weatherAdapter.setWeathers(Utility.get().getWeatherModel(it.list))
         })
     }
 

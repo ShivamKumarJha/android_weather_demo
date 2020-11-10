@@ -4,10 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.shivamkumarjha.weatherdemo.R
-import com.shivamkumarjha.weatherdemo.model.WeatherList
+import com.shivamkumarjha.weatherdemo.model.WeatherModel
 
 class WeatherAdapter() : RecyclerView.Adapter<WeatherViewHolder>() {
-    private var weathers: ArrayList<WeatherList> = arrayListOf()
+    private var weathers: ArrayList<WeatherModel> = arrayListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeatherViewHolder {
         val itemView = LayoutInflater.from(parent.context)
@@ -21,7 +21,7 @@ class WeatherAdapter() : RecyclerView.Adapter<WeatherViewHolder>() {
         holder.initialize(weathers[position])
     }
 
-    fun setWeathers(weathers: ArrayList<WeatherList>) {
+    fun setWeathers(weathers: ArrayList<WeatherModel>) {
         this.weathers = weathers
         notifyDataSetChanged()
     }

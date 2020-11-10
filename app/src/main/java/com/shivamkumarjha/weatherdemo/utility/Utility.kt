@@ -8,6 +8,8 @@ import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.google.android.material.snackbar.Snackbar
 import com.shivamkumarjha.weatherdemo.BuildConfig
+import com.shivamkumarjha.weatherdemo.model.WeatherList
+import com.shivamkumarjha.weatherdemo.model.WeatherModel
 import com.shivamkumarjha.weatherdemo.network.ApiListener
 import com.shivamkumarjha.weatherdemo.network.ResponseState
 
@@ -97,5 +99,59 @@ class Utility {
         temp_max: Double
     ): Double {
         return (temp + feels_like + temp_min + temp_max) / 4
+    }
+
+    fun getDateOnly(date: String): String {
+        return date.substringBefore(" ")
+    }
+
+    fun getWeatherModel(weatherList: ArrayList<WeatherList>): ArrayList<WeatherModel> {
+        var size = 0
+        val weatherModel: ArrayList<WeatherModel> = arrayListOf()
+        for ((index, item) in weatherList.withIndex()) {
+            if (index < weatherList.size - 1) {
+                // We need list with only 4 entries
+                if (size >= 4)
+                    return weatherModel
+                if (getDateOnly(item.dt_txt) == getDateOnly(weatherList[index + 1].dt_txt)) {
+                    // Using sub Index to determine weather to add new entry or update previous entry
+                    var subIndex = -1
+                    if (weatherModel.isNotEmpty())
+                        for ((i, weather) in weatherModel.withIndex()) {
+                            if (getDateOnly(weather.day) == getDateOnly(item.dt_txt)) {
+                                subIndex = i
+                                break
+                            }
+                        }
+                    if (subIndex == -1) {
+                        weatherModel.add(
+                            WeatherModel(
+                                item.dt_txt,
+                                getAverageTemperature(
+                                    item.main.temp,
+                                    item.main.feels_like,
+                                    item.main.temp_min,
+                                    item.main.temp_max
+                                )
+                            )
+                        )
+                        size++
+                    } else {
+                        // New average temperature of previous + current
+                        val averageTemperature = (getAverageTemperature(
+                            item.main.temp,
+                            item.main.feels_like,
+                            item.main.temp_min,
+                            item.main.temp_max
+                        ) + weatherModel[subIndex].temperature) / 2
+                        weatherModel[subIndex] = WeatherModel(
+                            item.dt_txt,
+                            averageTemperature
+                        )
+                    }
+                }
+            }
+        }
+        return weatherModel
     }
 }
