@@ -9,7 +9,7 @@ import androidx.lifecycle.MutableLiveData
 import com.google.android.material.snackbar.Snackbar
 import com.shivamkumarjha.weatherdemo.BuildConfig
 import com.shivamkumarjha.weatherdemo.model.WeatherList
-import com.shivamkumarjha.weatherdemo.model.WeatherModel
+import com.shivamkumarjha.weatherdemo.model.ForecastModel
 import com.shivamkumarjha.weatherdemo.network.ApiListener
 import com.shivamkumarjha.weatherdemo.network.ResponseState
 import java.text.SimpleDateFormat
@@ -114,28 +114,28 @@ class Utility {
         return date.substringBefore(" ")
     }
 
-    fun getWeatherModel(weatherList: ArrayList<WeatherList>): ArrayList<WeatherModel> {
+    fun getWeatherModel(weatherList: ArrayList<WeatherList>): ArrayList<ForecastModel> {
         var size = 0
-        val weatherModel: ArrayList<WeatherModel> = arrayListOf()
+        val forecastModel: ArrayList<ForecastModel> = arrayListOf()
         for ((index, item) in weatherList.withIndex()) {
             if (index < weatherList.size - 1) {
                 // We need list with only 4 entries
                 if (size >= 4)
-                    return weatherModel
+                    return forecastModel
                 // Compare current item with next item
                 if (getDateOnly(item.dt_txt) == getDateOnly(weatherList[index + 1].dt_txt)) {
                     // Using sub Index to determine weather to add new entry or update previous entry
                     var subIndex = -1
-                    if (weatherModel.isNotEmpty())
-                        for ((i, weather) in weatherModel.withIndex()) {
+                    if (forecastModel.isNotEmpty())
+                        for ((i, weather) in forecastModel.withIndex()) {
                             if (getDateOnly(weather.day) == getDateOnly(item.dt_txt)) {
                                 subIndex = i
                                 break
                             }
                         }
                     if (subIndex == -1) {
-                        weatherModel.add(
-                            WeatherModel(
+                        forecastModel.add(
+                            ForecastModel(
                                 item.dt_txt,
                                 getAverageTemperature(
                                     item.main.temp,
@@ -153,8 +153,8 @@ class Utility {
                             item.main.feels_like,
                             item.main.temp_min,
                             item.main.temp_max
-                        ) + weatherModel[subIndex].temperature) / 2
-                        weatherModel[subIndex] = WeatherModel(
+                        ) + forecastModel[subIndex].temperature) / 2
+                        forecastModel[subIndex] = ForecastModel(
                             item.dt_txt,
                             averageTemperature
                         )
@@ -162,16 +162,16 @@ class Utility {
                 } else {
                     // Decide to add current item
                     var subIndex = -1
-                    if (weatherModel.isNotEmpty())
-                        for ((i, weather) in weatherModel.withIndex()) {
+                    if (forecastModel.isNotEmpty())
+                        for ((i, weather) in forecastModel.withIndex()) {
                             if (getDateOnly(weather.day) == getDateOnly(item.dt_txt)) {
                                 subIndex = i
                                 break
                             }
                         }
                     if (subIndex == -1) {
-                        weatherModel.add(
-                            WeatherModel(
+                        forecastModel.add(
+                            ForecastModel(
                                 item.dt_txt,
                                 getAverageTemperature(
                                     item.main.temp,
@@ -186,7 +186,7 @@ class Utility {
                 }
             }
         }
-        return weatherModel
+        return forecastModel
     }
 
     fun getDayFromDate(date: String): String {

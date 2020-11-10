@@ -82,6 +82,6 @@
         android:clipToPadding="false"
         android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@+id/tv_city_id"
-        tools:listitem="@layout/item_weather" />
+        tools:listitem="@layout/item_forecast" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

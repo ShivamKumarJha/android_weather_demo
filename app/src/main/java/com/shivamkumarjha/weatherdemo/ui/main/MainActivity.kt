@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shivamkumarjha.weatherdemo.R
 import com.shivamkumarjha.weatherdemo.config.Constants
-import com.shivamkumarjha.weatherdemo.ui.main.adapter.WeatherAdapter
+import com.shivamkumarjha.weatherdemo.ui.main.adapter.ForecastAdapter
 import com.shivamkumarjha.weatherdemo.utility.Utility
 
 class MainActivity : AppCompatActivity() {
@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var retryButton: Button
     private lateinit var recyclerView: RecyclerView
     private lateinit var slideUpAnimation: Animation
-    private lateinit var weatherAdapter: WeatherAdapter
+    private lateinit var forecastAdapter: ForecastAdapter
     private lateinit var mainViewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,8 +54,8 @@ class MainActivity : AppCompatActivity() {
         recyclerView = findViewById(R.id.recycler_view_weather)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.setHasFixedSize(true)
-        weatherAdapter = WeatherAdapter()
-        recyclerView.adapter = weatherAdapter
+        forecastAdapter = ForecastAdapter()
+        recyclerView.adapter = forecastAdapter
         // View Model
         mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         callApi()
@@ -93,7 +93,7 @@ class MainActivity : AppCompatActivity() {
         })
         mainViewModel.forecast.observe(this, {
             if (it != null)
-                weatherAdapter.setWeathers(Utility.get().getWeatherModel(it.list))
+                forecastAdapter.setWeathers(Utility.get().getWeatherModel(it.list))
         })
     }
 
