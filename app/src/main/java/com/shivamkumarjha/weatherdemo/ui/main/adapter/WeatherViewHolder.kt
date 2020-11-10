@@ -12,6 +12,7 @@ class WeatherViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val temperature: TextView = itemView.findViewById(R.id.tv_temp_id)
 
     fun initialize(weatherList: WeatherList) {
-
+        day.text = weatherList.dt_txt
+        temperature.text = weatherList.main.temp.toString()
     }
 }

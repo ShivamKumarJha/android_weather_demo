@@ -9,7 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="bg_button">#4A4A4A</color>
     <color name="bg_failure">#E85959</color>
-    <color name="bg_success">#F5f6F7</color>
+    <color name="bg_success">#F5F6F7</color>
     <color name="text_light">#556799</color>
     <color name="text_regular">#2A2A2A</color>
 </resources>
