@@ -1,7 +1,6 @@
 package com.shivamkumarjha.weatherdemo.ui.main
 
 import android.annotation.SuppressLint
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.view.animation.Animation
@@ -65,7 +64,7 @@ class MainActivity : AppCompatActivity() {
         callApi()
         // View listeners
         retryButton.setOnClickListener {
-            constraintLayout.setBackgroundColor(Color.WHITE)
+            constraintLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.bg_success))
             retryButton.visibility = View.GONE
             errorTextView.visibility = View.GONE
             callApi()
