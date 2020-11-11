@@ -7,5 +7,6 @@ import javax.inject.Singleton
 @Singleton
 @Component(modules = [RetrofitClient::class])
 interface ApiComponent {
+    fun inject(httpInterceptor: HttpInterceptor)
     fun inject(weatherRepository: WeatherRepository)
 }

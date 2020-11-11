@@ -1,13 +1,22 @@
 package com.shivamkumarjha.weatherdemo.network
 
 import android.net.ConnectivityManager
+import com.shivamkumarjha.weatherdemo.ui.BaseApplication
 import okhttp3.Interceptor
 import okhttp3.Response
+import javax.inject.Inject
 
-class HttpInterceptor(private val connectivityManager: ConnectivityManager) : Interceptor {
+class HttpInterceptor : Interceptor {
+
+    @Inject
+    lateinit var connectivityManager: ConnectivityManager
+
+    init {
+        BaseApplication.apiComponent.inject(this)
+    }
 
     override fun intercept(chain: Interceptor.Chain): Response {
-        if(!isNetworkAvailable())
+        if (!isNetworkAvailable())
             throw NoConnectivityException()
         return chain.proceed(chain.request())
     }

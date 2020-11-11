@@ -47,11 +47,15 @@ class RetrofitClient {
 
     @Singleton
     @Provides
+    fun getConnectivityManager(): ConnectivityManager {
+        return mContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    }
+
+    @Singleton
+    @Provides
     fun getOkHTTPClient(cache: Cache): OkHttpClient {
         val client = OkHttpClient.Builder()
         val logging = HttpLoggingInterceptor()
-        val connectivityManager =
-            mContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         // set your desired log level
         if (BuildConfig.DEBUG) {
             // development build
@@ -64,7 +68,7 @@ class RetrofitClient {
         client.readTimeout(5, TimeUnit.MINUTES)
         // add logging as last interceptor
         client.addInterceptor(logging)
-        client.addInterceptor(HttpInterceptor(connectivityManager))
+        client.addInterceptor(HttpInterceptor())
         client.cache(cache)
         client.addNetworkInterceptor(StethoInterceptor())
         client.retryOnConnectionFailure(true)
