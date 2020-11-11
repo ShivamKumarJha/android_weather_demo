@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shivamkumarjha.weatherdemo.R
 import com.shivamkumarjha.weatherdemo.config.Constants
+import com.shivamkumarjha.weatherdemo.persistence.PreferenceManager
 import com.shivamkumarjha.weatherdemo.ui.main.adapter.ForecastAdapter
 import com.shivamkumarjha.weatherdemo.utility.Utility
 
@@ -32,6 +33,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var slideUpAnimation: Animation
     private lateinit var forecastAdapter: ForecastAdapter
     private lateinit var mainViewModel: MainViewModel
+    private val preferenceManager: PreferenceManager by lazy {
+        PreferenceManager()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,6 +89,7 @@ class MainActivity : AppCompatActivity() {
                 temperatureTextView.text =
                     Utility.get().convertKelvinToCelsius(it.main.temp).toInt().toString() + "°"
                 cityTextView.text = it.name
+                preferenceManager.city = it.name
             }
         })
         mainViewModel.forecastApiState.observe(this, {
