@@ -5,4 +5,7 @@
     <string name="demo_temperature">28°</string>
     <string name="api_error">Something went wrong at our end!</string>
     <string name="retry">Retry</string>
+    <string name="failed">Failed</string>
+    <string name="unauthorized">Unauthorized access!</string>
+    <string name="no_internet_connection">No Internet Connection!</string>
 </resources>

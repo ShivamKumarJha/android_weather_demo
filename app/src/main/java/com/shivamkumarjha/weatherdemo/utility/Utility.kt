@@ -8,8 +8,9 @@ import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.google.android.material.snackbar.Snackbar
 import com.shivamkumarjha.weatherdemo.BuildConfig
-import com.shivamkumarjha.weatherdemo.model.WeatherList
+import com.shivamkumarjha.weatherdemo.R
 import com.shivamkumarjha.weatherdemo.model.ForecastModel
+import com.shivamkumarjha.weatherdemo.model.WeatherList
 import com.shivamkumarjha.weatherdemo.network.ApiListener
 import com.shivamkumarjha.weatherdemo.network.ResponseState
 import java.text.SimpleDateFormat
@@ -45,22 +46,25 @@ class Utility {
             it.isOffline != null -> {
                 getSnackBar(
                     view,
-                    "Failed! " + it.isOffline,
+                    it.isOffline.toString(),
                     Snackbar.LENGTH_LONG
                 ).setBackgroundTint(Color.RED).show()
             }
             it.errorMessage != null -> {
-                debugToast(context, "Failed! " + it.errorMessage)
+                debugToast(context, it.errorMessage.toString())
             }
             it.responseCode != null -> {
                 if (it.responseCode == 401)
                     getSnackBar(
                         view,
-                        "Unauthorized access! Please update APP ID!",
+                        context.resources.getString(R.string.unauthorized),
                         Snackbar.LENGTH_LONG
                     ).setBackgroundTint(Color.RED).show()
                 else
-                    debugToast(context, "Failed! " + it.responseCode)
+                    debugToast(
+                        context,
+                        context.resources.getString(R.string.failed) + "\n" + it.responseCode
+                    )
             }
         }
     }
